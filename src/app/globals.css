@@ -1,26 +1,443 @@
+@import "primereact/resources/themes/lara-light-blue/theme.css";
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+}
+
+.custom-dropdown {
+    height: 40px;
+}
+.custom-dropdown .p-dropdown-label {
+    padding: 10px 12px;
+    font-size: 13px;
+    color:#64748b;
+}
+.custom-dropdown .p-dropdown-label.p-placeholder {
+    color: #94a3b8;
+}
+.custom-dropdown .p-dropdown-trigger {
+  width: 40px;
+  color: #475569;
+}
+.custom-dropdown-panel {
+    border: 1px solid rgb(222, 232, 236);
+    border-radius: 3px;
+    overflow: hidden;
+    background-color: white;
+}
+.custom-dropdown-panel .p-dropdown-items {
+    padding: 0;
+}
+.custom-dropdown-panel .p-dropdown-item {
+    padding: 10px 14px;
+    font-size: "10px";
+    color: #475569;
+}
+.custom-dropdown-panel .p-dropdown-item:hover {
+    background: #f1f2f3;
+}
+.custom-dropdown-panel .p-dropdown-item.p-highlight {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.custom-calendar {
+   height: 40px;
+}
+.custom-calendar .p-inputtext {
+    padding: 10px 12px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+.custom-calendar .p-datepicker-trigger {
+    width: 40px;
+    color: #475569;
+}
+.p-datepicker,
+.p-dropdown-panel {
+    z-index: 10000 !important;
+}
+.custom-calendar-panel {
+    width: 315px !important;
+    min-width: 315px !important;
+    max-width: 315px !important;
+
+    padding: 8px !important;
+
+    border: 1px solid rgb(222, 232, 236);
+    margin-top: 4px;
+    background-color: white;
+    box-sizing: border-box;
+}
+.custom-calendar-panel .p-datepicker-prev,
+.custom-calendar-panel .p-datepicker-next {
+    width: 32px !important;
+    height: 32px !important;
+
+    border: 1px solid #d9dee8 !important;
+    border-radius:100% !important;
+
+    color: #64748b !important;
+    background: white !important;
+}
+.custom-calendar-panel .p-datepicker-title {
+    font-size: 13px;
+    color: #576475;
+    font-weight: 400;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.custom-calendar-panel .p-datepicker-calendar {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 3px;
+    padding: 0;
+}
+
+/* Week days */
+.custom-calendar-panel .p-datepicker-calendar th {
+    width: 36px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #111827 !important;
+}
+
+/* Date circle */
+.custom-calendar-panel .p-datepicker-calendar td > span {
+    width: 30px !important;
+    height: 30px !important;
+
+    padding: 0 !important;
+    margin: 0 auto !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid rgb(250, 246, 250) !important;
+    border-radius: 50% !important;
+
+    background: #e5ebf3 !important;
+
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #17213b !important;
+}
+.custom-calendar-panel .p-datepicker-calendar td > span.p-highlight {
+    background: rgb(82, 70, 70) !important;
+    color: white !important;
+}
+
+/* =========================
+   Duration Picker
+========================= */
+
+.duration-picker {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    overflow: visible;
+}
+
+.duration-dropdown {
+    flex: 1;
+    min-width: 0;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+.duration-dropdown .p-dropdown-label {
+    padding: 9px 12px !important;
+    font-size: 13px !important;
+    color: #6b7280 !important;
+}
+
+.duration-dropdown .p-dropdown-label.p-placeholder {
+    color: #9ca3af !important;
+}
+
+.duration-dropdown .p-dropdown-trigger {
+    width: 32px !important;
+    color: #6b7280 !important;
+}
+
+.duration-picker:focus-within {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.duration-to {
+    padding: 0 12px;
+    font-size: 13px;
+    color: #374151;
+    white-space: nowrap;
+}
+
+/* =========================
+   Dropdown Panel
+========================= */
+
+.duration-dropdown-panel {
+    border: 1px solid #d1d5db !important;
+    border-radius: 4px !important;
+    overflow: hidden;
+}
+
+.duration-dropdown-panel .p-dropdown-items {
+    padding: 0 !important;
+}
+
+.duration-dropdown-panel .p-dropdown-item {
+    padding: 11px 14px !important;
+    font-size: 13px !important;
+    color: #111827 !important;
+}
+
+.duration-dropdown-panel .p-dropdown-item:hover {
+    background: #f3f4f6 !important;
+}
+
+.duration-dropdown-panel .p-dropdown-item.p-highlight {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+}
+
+.duration-dropdown-panel .p-dropdown-items-wrapper {
+    max-height: 220px !important;
+}
+
+.duration-dropdown-panel
+.p-dropdown-items-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.duration-dropdown-panel
+.p-dropdown-items-wrapper::-webkit-scrollbar-thumb {
+    background: #b8b8b8;
+    border-radius: 10px;
+}
+
+.duration-dropdown-panel
+.p-dropdown-items-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.editor ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.editor ol {
+    list-style-type: decimal;
+    padding-left: 25px;
+}
+
+.editor li {
+    margin-bottom: 5px;
+}
+
+.candidate-table .p-datatable-thead > tr > th {
+    display: flex-col;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    border-top:1px solid #e5e7eb ;
+    height: 32px;
+    padding: 10px 6px;
+    font-size: 13px;
+    color: #343538;
+}
+
+.candidate-table .p-datatable-tbody > tr > td {
+    align-items: center;
+    background: #ffffff;
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    height: 50px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #343538;
+}
+.candidate-table .p-datatable-wrapper {
+    height: 600px; 
+}
+
+.candidate-table .p-paginator {
+    margin-right:0 auto;
+    padding: 16px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.candidate-table .p-paginator .p-dropdown {
+    margin: 0 auto !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 6px !important;
+    height: 36px !important;
+    min-width: 90px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    background-color: #ffffff !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+.candidate-table .p-paginator .p-dropdown .p-dropdown-label {
+    padding: 0 8px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+}
+.p-dropdown-panel .p-dropdown-item {
+    height: 36px;
+    width: 90px;
+    padding: 3px 5px 6px !important;
+    font-size: 15px !important;
+    font-weight: 500;
+    background: white;
+    border: 1px solid gainsboro;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.p-dropdown-panel .p-dropdown-item.p-highlight {
+    background-color: #d9dee8 !important;
+    color: #111827 !important;
+}
+
+.p-dropdown-panel .p-dropdown-item:hover {
+    background-color: #f3f4f6 !important;
+}
+
+.candidate-table .p-paginator .p-paginator-first,
+.candidate-table .p-paginator .p-paginator-prev,
+.candidate-table .p-paginator .p-paginator-next,
+.candidate-table .p-paginator .p-paginator-last,
+.candidate-table .p-paginator .p-paginator-page{
+    margin-left: 0 !important;
+}
+.candidate-table .p-paginator .p-paginator-first,
+.candidate-table .p-paginator .p-paginator-prev,
+.candidate-table .p-paginator .p-paginator-next,
+.candidate-table .p-paginator .p-paginator-last,
+.candidate-table .p-paginator .p-paginator-page {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 6px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    margin: 0 2px !important;
+    color: #374151 !important;
+    background: #ffffff !important;
+}
+.candidate-table .p-checkbox .p-checkbox-box {
+    border: 1px solid #9ca3af !important;
+    border-radius: 4px;
+    height: 20px !important;
+    width: 20px !important;
+}
+
+/* PrimeReact Table Custom Styling to Match Screenshot */
+.custom-table .p-datatable-header { 
+    background: #ffffff; 
+    border: none; 
+} 
+  
+.custom-table .p-datatable-thead > tr > th { 
+    background: #f9fafb !important; 
+    color: #6b7280 !important; 
+    font-weight: 600; 
+    font-size: 10px; 
+    padding: 12px 18px; 
+    border-bottom: 1px solid #e5e7eb; 
+} 
+  
+.custom-table .p-datatable-tbody > tr > td { 
+    padding: 8px 12px; 
+    border-bottom: 1px solid #f3f4f6; 
+    color: #374151; 
+} 
+  
+/* ========================= 
+   Final Exact Paginator Layout
+========================= */ 
+  
+.custom-table .p-paginator { 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: space-between !important; 
+    width: 100% !important; 
+    background: #ffffff !important; 
+    padding: 12px 16px !important; 
+    border: none !important; 
+} 
+
+/* Left: Showing 1 to 5 of 5 results */ 
+.custom-table .p-paginator-current { 
+    margin-right: auto !important;
+    font-size: 12px !important; 
+    font-weight: 400 !important; 
+    color: #64748b !important; 
+} 
+
+/* Center: Rows per page dropdown wrapper */
+.custom-table .p-paginator .p-dropdown { 
+    margin: 0 auto !important;
+    height: 32px !important; 
+    min-width: 64px !important; 
+    border: 1px solid #d9dee8 !important; 
+    border-radius: 4px !important; 
+    background: #ffffff !important; 
+} 
+
+.custom-table .p-paginator .p-dropdown .p-dropdown-label { 
+    font-size: 12px !important; 
+    color: #374151 !important; 
+    padding: 6px 8px !important; 
+} 
+
+/* Navigation Buttons Styling */
+.custom-table .p-paginator .p-paginator-first, 
+.custom-table .p-paginator .p-paginator-prev, 
+.custom-table .p-paginator .p-paginator-next, 
+.custom-table .p-paginator .p-paginator-last { 
+    width: 32px !important; 
+    height: 32px !important; 
+    min-width: 32px !important; 
+    margin: 0 2px !important; 
+    border: 1px solid #d9dee8 !important; 
+    border-radius: 4px !important; 
+    background: #ffffff !important; 
+    color: #64748b !important; 
+} 
+
+.custom-table .p-paginator .p-paginator-first:hover, 
+.custom-table .p-paginator .p-paginator-prev:hover, 
+.custom-table .p-paginator .p-paginator-next:hover, 
+.custom-table .p-paginator .p-paginator-last:hover { 
+    background: #f8fafc !important; 
+} 
+
+.custom-table .p-paginator button:disabled { 
+    opacity: 0.5 !important; 
 }

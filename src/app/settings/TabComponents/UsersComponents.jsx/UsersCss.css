@@ -1,0 +1,101 @@
+html, body {
+  overflow-y: hidden;
+}
+.custom-table .p-datatable-wrapper {
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+.custom-table .p-datatable-header { 
+    background: #ffffff; 
+    border: none; 
+} 
+ 
+.custom-table .p-datatable-thead > tr > th { 
+    background: #f9fafb !important; 
+    color: #6b7280 !important; 
+    font-weight: 600; 
+    font-size: 10px; 
+    padding: 12px 18px; 
+    border-bottom: 1px solid #e5e7eb; 
+} 
+ 
+.custom-table .p-datatable-tbody > tr > td { 
+    padding: 8px 12px; 
+    border-bottom: 1px solid #f3f4f6; 
+    color: #374151; 
+} 
+
+.custom-table .p-paginator {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    padding: 10px 16px !important;
+    border: none !important;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+}
+
+.custom-table .p-paginator-current {
+    order: 1 !important;
+    margin-right: auto !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #64748b !important;
+}
+
+.custom-table .p-paginator .p-dropdown {
+    order: 2 !important;
+    width: 64px !important;
+    min-width: 64px !important;
+    height: 32px !important;
+    margin: 0 auto !important;
+    border: 1px solid #d9dee8 !important;
+    border-radius: 6px !important;
+    background: #ffffff !important;
+}
+
+.custom-table .p-paginator .p-dropdown .p-dropdown-label {
+    font-size: 12px !important;
+    color: #374151 !important;
+    padding: 6px 8px !important;
+}
+
+.custom-table .p-paginator .p-paginator-first,
+.custom-table .p-paginator .p-paginator-prev,
+.custom-table .p-paginator .p-paginator-next,
+.custom-table .p-paginator .p-paginator-last {
+    order: 3 !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    margin-left: 4px !important;
+    border: 1px solid #d9dee8 !important;
+    border-radius: 6px !important;
+    background: #ffffff !important;
+    color: #64748b !important;
+}
+
+.custom-table .p-paginator .p-paginator-first:hover,
+.custom-table .p-paginator .p-paginator-prev:hover,
+.custom-table .p-paginator .p-paginator-next:hover,
+.custom-table .p-paginator .p-paginator-last:hover {
+    background: #f8fafc !important;
+}
+
+.custom-table .p-paginator button:disabled {
+    opacity: 0.4 !important;
+}
+
+.custom-table .p-paginator .p-paginator-pages {
+    order: 3 !important;
+}
+
+.custom-page-info {
+    order: 3 !important;
+    font-size: 12px !important;
+    color: #64748b !important;
+    margin-left: 8px !important;
+    margin-right: 4px !important;
+}
