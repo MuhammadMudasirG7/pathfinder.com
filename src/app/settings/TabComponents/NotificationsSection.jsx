@@ -1,10 +1,11 @@
 "use client"
-import TimePicker from '@/components/TimePickerDropdown'
+
 import { BellRing } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import HeaderNotification from './NotificationComponents/HeaderNotification';
 import DaysOff from './NotificationComponents/DaysOff';
 import EmailNotifiy from './NotificationComponents/EmailNotifiy';
+import TimePickerDropdown from '@/components/TimePickerDropdown';
 
 
 function NotificationsSection() {
@@ -109,9 +110,9 @@ function NotificationsSection() {
               />
               <div className='cursor-not-allowed flex items-center gap-3.5'>
                 <span className='text-[12px]  text-gray-800 font-sans'>Do not notify me from:</span>
-                <TimePicker disabled={true} time={fromTime} setTime={setFromTime} />
+                <TimePickerDropdown disabled={true} time={fromTime} setTime={setFromTime} />
                 <span className='text-sm text-gray-800'>To</span>
-                <TimePicker disabled={true} time={toTime} setTime={setToTime} />
+                <TimePickerDropdown disabled={true} time={toTime} setTime={setToTime} />
               </div>
 
             </div>

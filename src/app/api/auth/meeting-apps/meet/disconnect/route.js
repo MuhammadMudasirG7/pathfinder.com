@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { connectDB } from "../../../../../../lib/db";
-import MeetingIntegration from "../../../../../../models/MeetingIntegration";
+import { connectDB } from "@/lib/db";
+import MeetingIntegration from "@/models/MeetingIntegration";
+
+
 
 
 export async function POST() {

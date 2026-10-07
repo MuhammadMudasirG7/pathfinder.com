@@ -1,97 +1,44 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { X, Search } from 'lucide-react';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
-
-// Load Stripe publishable key
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+import React, { useState } from 'react';
+import { X } from 'lucide-react';
 
 function CheckoutForm({ setIsUpdateModalOpen, onCardSaved }) {
-  const stripe = useStripe();
-  const elements = useElements();
-
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvc, setCvc] = useState('');
   const [cardName, setCardName] = useState('');
   const [country, setCountry] = useState('NZ');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Individual field error states for real-time validation
-  const [numberError, setNumberError] = useState('');
-  const [expiryError, setExpiryError] = useState('');
-  const [cvcError, setCvcError] = useState('');
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
 
-    if (numberError || expiryError || cvcError) {
-      setErrorMessage('Please fix the card errors before submitting.');
+    if (!cardNumber || !expiryDate || !cvc || !cardName) {
+      setErrorMessage('Please fill in all the card details.');
       return;
     }
 
     setLoading(true);
     setErrorMessage('');
 
-    try {
-      const res = await fetch('/api/auth/payment/setup', { method: 'POST' });
-      const data = await res.json();
+    // Simulate saving mock card details
+    setTimeout(() => {
+      const mockCardData = {
+        cardLast4: cardNumber.slice(-4) || '4242',
+        cardBrand: 'VISA',
+        expiryMonth: expiryDate.split('/')[0] || '12',
+        expiryYear: expiryDate.split('/')[1] || '28',
+        cardholderName: cardName,
+        billingCountry: country,
+      };
 
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to initialize payment setup.');
-      }
-
-      const clientSecret = data.clientSecret;
-      const cardElement = elements.getElement(CardNumberElement);
-
-      const { error: stripeError, setupIntent } = await stripe.confirmCardSetup(clientSecret, {
-        payment_method: {
-          card: cardElement,
-          billing_details: {
-            name: cardName,
-            address: { country: country }
-          }
-        }
-      });
-
-      if (stripeError) {
-        throw new Error(stripeError.message);
-      }
-
-      const saveRes = await fetch('/api/auth/payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          paymentMethodId: setupIntent.payment_method,
-          cardholderName: cardName,
-          billingCountry: country
-        })
-      });
-
-      const saveData = await saveRes.json();
-      if (!saveData.success) {
-        throw new Error(saveData.error || 'Failed to save payment method in database.');
-      }
-
-      onCardSaved(saveData.data);
+      onCardSaved(mockCardData);
       setIsUpdateModalOpen(false);
-      alert('Payment details updated successfully!');
-    } catch (err) {
-      setErrorMessage(err.message);
-    } finally {
       setLoading(false);
-    }
-  };
-
-  const elementStyles = {
-    base: {
-      color: '#142142',
-      fontFamily: 'sans-serif',
-      fontSize: '13px',
-      '::placeholder': { color: '#aab7c4' },
-    },
-    invalid: { color: '#fa755a' },
+      alert('Payment details updated successfully!');
+    }, 500);
   };
 
   return (
@@ -113,37 +60,43 @@ function CheckoutForm({ setIsUpdateModalOpen, onCardSaved }) {
             {/* Card Number */}
             <div className="md:col-span-6 space-y-1">
               <label className="block text-[13px] text-[#142142]">Card Number</label>
-              <div className={`border rounded px-3 py-2.5 bg-white focus-within:ring-1 focus-within:ring-indigo-500 ${numberError ? 'border-red-500' : 'border-gray-300'}`}>
-                <CardNumberElement 
-                  options={{ style: elementStyles, showIcon: true }} 
-                  onChange={(e) => setNumberError(e.error ? e.error.message : '')}
-                />
-              </div>
-              {numberError && <p className="text-red-500 text-[11px] mt-1">{numberError}</p>}
+              <input
+                type="text"
+                placeholder="4242 4242 4242 4242"
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value)}
+                maxLength={19}
+                required
+                className="w-full border border-gray-300 rounded px-3 py-2 text-[13px] text-[#142142] font-sans focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+              />
             </div>
 
             {/* Expiry Date */}
             <div className="md:col-span-3 space-y-1">
               <label className="block text-[13px] text-[#142142]">Expiry Date</label>
-              <div className={`border rounded px-3 py-2.5 bg-white focus-within:ring-1 focus-within:ring-indigo-500 ${expiryError ? 'border-red-500' : 'border-gray-300'}`}>
-                <CardExpiryElement 
-                  options={{ style: elementStyles }} 
-                  onChange={(e) => setExpiryError(e.error ? e.error.message : '')}
-                />
-              </div>
-              {expiryError && <p className="text-red-500 text-[11px] mt-1">{expiryError}</p>}
+              <input
+                type="text"
+                placeholder="MM/YY"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(e.target.value)}
+                maxLength={5}
+                required
+                className="w-full border border-gray-300 rounded px-3 py-2 text-[13px] text-[#142142] font-sans focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+              />
             </div>
 
             {/* Security Code */}
             <div className="md:col-span-3 space-y-1">
               <label className="block text-[13px] text-[#142142]">Security Code</label>
-              <div className={`border rounded px-3 py-2.5 bg-white focus-within:ring-1 focus-within:ring-indigo-500 ${cvcError ? 'border-red-500' : 'border-gray-300'}`}>
-                <CardCvcElement 
-                  options={{ style: elementStyles }} 
-                  onChange={(e) => setCvcError(e.error ? e.error.message : '')}
-                />
-              </div>
-              {cvcError && <p className="text-red-500 text-[11px] mt-1">{cvcError}</p>}
+              <input
+                type="password"
+                placeholder="CVC"
+                value={cvc}
+                onChange={(e) => setCvc(e.target.value)}
+                maxLength={4}
+                required
+                className="w-full border border-gray-300 rounded px-3 py-2 text-[13px] text-[#142142] font-sans focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+              />
             </div>
 
           </div>
@@ -199,7 +152,7 @@ function CheckoutForm({ setIsUpdateModalOpen, onCardSaved }) {
         </button>
         <button
           type="submit"
-          disabled={loading || !stripe}
+          disabled={loading}
           className="bg-[#6b46c1] hover:bg-[#553c9a] text-white text-[13px] font-medium px-4 py-1.5 rounded transition-colors shadow-sm disabled:opacity-50 cursor-pointer"
         >
           {loading ? 'Saving...' : 'Save'}
@@ -212,21 +165,6 @@ function CheckoutForm({ setIsUpdateModalOpen, onCardSaved }) {
 export default function PaymentDetailsSection() {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [savedCard, setSavedCard] = useState(null);
-
-  useEffect(() => {
-    const fetchSavedCard = async () => {
-      try {
-        const res = await fetch('/api/auth/payment');
-        const result = await res.json();
-        if (result.success && result.data && result.data.length > 0) {
-          setSavedCard(result.data[0]);
-        }
-      } catch (err) {
-        console.error('Failed to fetch payment method:', err);
-      }
-    };
-    fetchSavedCard();
-  }, []);
 
   return (
     <div className="p-6 max-w-5xl mx-auto bg-gray-50 font-sans text-[13px] text-[#142142]">
@@ -329,12 +267,10 @@ export default function PaymentDetailsSection() {
               </button>
             </div>
 
-            <Elements stripe={stripePromise}>
-              <CheckoutForm 
-                setIsUpdateModalOpen={setIsUpdateModalOpen} 
-                onCardSaved={(newCard) => setSavedCard(newCard)} 
-              />
-            </Elements>
+            <CheckoutForm 
+              setIsUpdateModalOpen={setIsUpdateModalOpen} 
+              onCardSaved={(newCard) => setSavedCard(newCard)} 
+            />
 
           </div>
         </div>
