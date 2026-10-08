@@ -2,16 +2,18 @@ import { NextResponse } from "next/server";
 import { google } from "googleapis";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { connectDB } from "../../../../../../../lib/db";
-import User from "../../../../../../../models/user";
-import EmailConnection from "../../../../../../../models/EmailConnectionModel";
+import { connectDB } from "@/lib/db"; // 🧠 Absolute path alias set kiya
+import User from "@/models/user"; // 🧠 Absolute path alias set kiya
+import EmailConnection from "@/models/EmailConnectionModel"; // 🧠 Absolute path alias set kiya
 
+// Dynamic Production URL Setup
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pathfindercom.vercel.app";
 
-// Google OAuth Client
+// Google OAuth Client (Dynamic Redirect URI ke sath)
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI
+  `${baseUrl}/api/auth/email/google/callback` // 🧠 Live dynamic production callback URL
 );
 
 // Google permissions
@@ -41,7 +43,7 @@ export async function GET(req) {
     if (error) {
       console.log("GOOGLE ACCESS DENIED");
       return NextResponse.redirect(
-        `http://localhost:3000/settings/email?error=google_access_denied`
+        `${baseUrl}/settings?tab=integrations&error=google_access_denied` // 🧠 Live Route + Sahi Tab Update
       );
     }
 
@@ -178,10 +180,10 @@ export async function GET(req) {
       console.log("NEW EMAIL CONNECTION CREATED:", emailConnection._id);
     }
 
-    // 13. Success Redirect to Frontend Settings
+    // 13. Success Redirect to Frontend Settings (Integrations tab)
     console.log("GOOGLE EMAIL CONNECTED SUCCESSFULLY");
     return NextResponse.redirect(
-      `http://localhost:3000/settings/email?connected=true`
+      `${baseUrl}/settings?tab=integrations&success=google_connected` // 🧠 Live Route + Sahi Tab par dynamic redirect
     );
 
   } catch (error) {
