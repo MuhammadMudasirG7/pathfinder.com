@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
 import jwt from "jsonwebtoken";
-import { connectDB } from "../../../../../../../lib/db";
-import GoogleCalendarConnection from "../../../../../../../models/GoogleCalendarConnection";
+import { connectDB } from "@/lib/db"; // 🧠 Absolute path alias set kiya
+import GoogleCalendarConnection from "@/models/GoogleCalendarConnection"; // 🧠 Absolute path alias set kiya
 
 export async function GET(req) {
   try {
@@ -10,17 +10,20 @@ export async function GET(req) {
 
     await connectDB();
 
+    // Base URL ko dynamic banayein (Vercel variable ya fallback link)
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pathfindercom.vercel.app";
+
     const { searchParams } = new URL(req.url);
     const code = searchParams.get("code");
     const state = searchParams.get("state");
     const error = searchParams.get("error");
 
     if (error) {
-      return NextResponse.redirect(`http://localhost:3000/settings?tab=calendar&error=access_denied`);
+      return NextResponse.redirect(`${baseUrl}/settings?tab=calendar&error=access_denied`); // 🧠 Dynamic URL
     }
 
     if (!code || !state) {
-      return NextResponse.redirect(`http://localhost:3000/settings?tab=calendar&error=no_code`);
+      return NextResponse.redirect(`${baseUrl}/settings?tab=calendar&error=no_code`); // 🧠 Dynamic URL
     }
 
     // State se user ID verify karein
@@ -37,7 +40,7 @@ export async function GET(req) {
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/calendar/google/callback`
+      `${baseUrl}/api/auth/calendar/google/callback` // 🧠 Dynamic URL
     );
 
     // Exchange code for tokens
@@ -73,7 +76,7 @@ export async function GET(req) {
     console.log("GOOGLE CALENDAR SUCCESSFULLY CONNECTED & SAVED");
 
     // Success redirect back to frontend settings page (Calendar tab)
-    return NextResponse.redirect(`http://localhost:3000/settings?tab=calendar&success=google_connected`);
+    return NextResponse.redirect(`${baseUrl}/settings?tab=calendar&success=google_connected`); // 🧠 Dynamic URL
 
   } catch (err) {
     console.error("CALENDAR CALLBACK ERROR:", err);
