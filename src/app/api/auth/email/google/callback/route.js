@@ -6,10 +6,8 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/user"; 
 import EmailConnection from "@/models/EmailConnectionModel"; 
 
-// Google permissions
 const SCOPES = [
-  "https://googleapis.com",
-  "https://googleapis.com",
+  "https://googleapis.com"
 ];
 
 export async function GET(req) {
