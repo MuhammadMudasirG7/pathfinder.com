@@ -34,7 +34,7 @@ export async function GET(req) {
 
     if (error) {
       return NextResponse.redirect(
-        `${baseUrl}/settings?tab=integrations&error=google_access_denied` 
+        `${baseUrl}/settings?tab=email&error=google_access_denied` 
       );
     }
 
@@ -113,7 +113,7 @@ export async function GET(req) {
       });
     }
 
-    return NextResponse.redirect(`${baseUrl}/settings?tab=integrations&success=google_connected`);
+    return NextResponse.redirect(`${baseUrl}/settings?tab=email&success=google_connected`);
 
   } catch (error) {
     console.error("GOOGLE EMAIL CONNECTION ERROR:", error);
